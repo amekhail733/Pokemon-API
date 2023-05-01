@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>replit</title>
+    <style>
+        *{
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        body{
+            background-color: #777777;
+            display: grid;
+            justify-content: center;
+        }
+        #generate{
+            font-size: 2rem;
+            transition: 1s;
+            
+        }
+        #generate:hover{
+            background-color: yellow;
+            transition: 1s;
+        }
+        #pokemon{
+            background-color: skyblue;
+            width: 30vw;
+            height: auto;
+            padding:20px;
+            text-align: center;
+        }
+        #pokemon-image{
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Random Pokemon Generator</h1>
+    <button id="generate">Generate Random Pokemon</button>
+    <div id="pokemon">
+        <img id="pokemon-image" src="" alt="">
+        <h2 id="pokemon-name"></h2>
+        <p id="pokemon-fact"></p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+			$(document).ready(function() {
+		    $('#generate').on('click', function() {
+		    $.getJSON('https://pokeapi.co/api/v2/pokemon/' + getRandomInt(1, 151), function(data) {
+		      $('#pokemon-image').attr('src', data.sprites.front_default);
+		      $('#pokemon-name').text(data.name);
+		      $('#pokemon-fact').text(getRandomFact(data));
+		    	});
+		  	});
+			});
+
+			function getRandomInt(min, max) {
+			  return Math.floor(Math.random() * (max - min + 1)) + min;
+			}
+			function getRandomFact(pokemon) {
+			  const facts = [
+			    `${pokemon.name} is a ${pokemon.types[0].type.name} type Pokemon.`,
+			    `${pokemon.name} has a base experience yield of ${pokemon.base_experience}.`,
+			    `${pokemon.name} has a weight of ${pokemon.weight} hectograms.`,
+			    `${pokemon.name} has a height of ${pokemon.height} decimeters.`,
+			    `The Pokemon ${pokemon.name} evolves into ${pokemon.species.name}.`
+			  ];
+			
+			  return facts[getRandomInt(0, facts.length - 1)];
+			}
+		</script>
+    </body>
+</html>
